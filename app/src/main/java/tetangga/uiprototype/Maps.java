@@ -12,7 +12,6 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -111,7 +110,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, Locati
                 showLocationName(location);
             }
         } else {
-            Log.d("UIPrototype", "Location provider permission denied, perms: " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+            //Log.d("LocationSample", "Location provider permission denied, perms: " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
         }
     }
 
@@ -145,25 +144,25 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, Locati
     }
 
     public void onProviderEnabled(String provider) {
-        Log.d("UIPrototype", "onProviderEnabled(" + provider + ")");
+        Log.d("LocationSample", "onProviderEnabled(" + provider + ")");
     }
 
     public void onProviderDisabled(String provider) {
-        Log.d("UIPrototype", "onProviderDisabled(" + provider + ")");
+        Log.d("LocationSample", "onProviderDisabled(" + provider + ")");
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("UIPrototype", "onStatusChanged(" + provider + ", " + status + ", extras)");
+        Log.d("LocationSample", "onStatusChanged(" + provider + ", " + status + ", extras)");
     }
 
     public void onLocationChanged(Location location) {
-        Log.d("UIPrototype", "onLocationChanged(" + location + ")");
+        Log.d("LocationSample", "onLocationChanged(" + location + ")");
 
         showLocationName(location);
     }
 
     private void showLocationName(Location location) {
-        Log.d("UIPrototype", "showLocationName("+location+")");
+        Log.d("LocationSample", "showLocationName("+location+")");
         // perform a reverse geocode to get the address
         if (Geocoder.isPresent()) {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -177,13 +176,13 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, Locati
                     String address = match.getAddressLine(0);
                     setLocation(address);
                 } else {
-                    Log.d("UIPrototype", "No results found while reverse geocoding GPS location");
+                    Log.d("LocationSample", "No results found while reverse geocoding GPS location");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            Log.d("UIPrototype", "No geocoder present");
+            Log.d("LocationSample", "No geocoder present");
         }
     }
     private Address geocodeLookup(String address) {
@@ -206,12 +205,25 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback, Locati
 
     private void setLocation(String location) {
         Log.d("LocationSample", "setLocation("+location+")");
+
+        //EditText locationField = (EditText)findViewById(R.id.txtLocation);
+        //locationField.setText(location);
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        // Add a marker in Sydney and move the camera
         LatLng CN = new LatLng(43.6426, -79.3871);
         String query = "UOIT";
         Address address = geocodeLookup(query);
